@@ -1,0 +1,13 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+    commands:
+      - pip install -r requirements.txt
+  build:
+    commands:
+      - echo "Building the Docker image..."
+      - $(aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <<ECR Repository name>>)
+      - docker build -t <<ECR Repository name>>:latest .
+      - docker push <<ECR Repository name>>:latest
